@@ -1,0 +1,155 @@
+.landing {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  background-color: white;
+  overflow: hidden;
+}
+
+.left-section {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.desk-shape {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 60%;
+  background: linear-gradient(to right, #292F9A, #4B4DED);
+  clip-path: polygon(0 40%, 100% 100%, 0% 100%);
+  z-index: 1;
+}
+
+.left-section img {
+  max-width: 90%;
+  height: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.right-section {
+  flex: 1;
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #1d2671;
+  text-align: center;
+}
+
+.logo-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.5rem; 
+  position: relative;
+}
+
+.logo-icon {
+  width: 50px;
+  height: auto;
+  margin-bottom: -0.6rem; 
+}
+
+.logo-title {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: #4b4ded;
+  margin-top: 0;
+}
+
+.slogan {
+  font-size: 1.25rem;
+  color: #222;
+  line-height: 1.4;
+  margin-bottom: 0.5rem; 
+}
+
+.desc.highlight {
+  font-weight: bold;
+  color: #000;
+  font-size: 1.15rem;
+  line-height: 1.4;
+  margin-top: 0;         
+  margin-bottom: 1.5rem; 
+}
+
+.logo-icon {
+  width: 50px;
+  height: auto;
+  margin-bottom: -0.6rem; 
+}
+
+.logo-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #4b4ded;
+  margin-top: 0.2rem;
+}
+
+.slogan {
+  font-size: 1.25rem;
+  color: #222;
+  line-height: 1.4;
+  margin-bottom: 0.5rem; 
+}
+
+.desc {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #1a1a1a;
+}
+
+.desc.highlight {
+  font-weight: bold;
+  color: #000;
+  font-size: 1.15rem;
+  line-height: 1.4;
+  margin-top: 0;        
+  margin-bottom: 1.5rem; 
+}
+
+.btn-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.8rem 1.8rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.primary {
+  background-color: #4b4ded;
+  color: white;
+  border: none;
+}
+
+.primary:hover {
+  background-color: #2e30c5;
+}
+
+.secondary {
+  background-color: white;
+  color: #4b4ded;
+  border: 2px solid #4b4ded;
+}
+
+.secondary:hover {
+  background-color: #f2f2f2;
+}
