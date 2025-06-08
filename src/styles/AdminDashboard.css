@@ -1,0 +1,55 @@
+.admin-dashboard {
+  padding: 2rem;
+  background-color: #f9fbff;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  flex: 1;
+}
+
+.admin-dashboard h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2d2e6e;
+  margin-bottom: 2rem;
+}
+
+.stats-grid {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap; /* כדי שהתוכן יישבר בשורות קטנות במסכים צרים */
+}
+
+.stat-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 1.8rem;
+  box-shadow: 0 4px 16px rgba(45, 46, 110, 0.08);
+  text-align: center;
+  transition: transform 0.2s ease;
+  flex: 1 1 230px; /* רספונסיבי - לפחות 230px ועד כמה שצריך */
+  max-width: 250px; /* שומר על גודל אחיד */
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+}
+
+.stat-card h3 {
+  font-size: 1.1rem;
+  color: #6a6f94;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.stat-card p {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2d2e6e;
+  margin: 0;
+}
+
+.admin-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9fbff;
+}

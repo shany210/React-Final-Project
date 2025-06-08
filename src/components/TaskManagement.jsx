@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/TaskManagement.css";
 import Sidebar from "./Sidebar";
 import searchIcon from "../assets/magnifying-glass.svg";
+import { UserContext } from "./UserContext";
+import { supabase } from "../supabase/supabaseClient";
 
 export default function TaskManagement() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -17,19 +19,80 @@ export default function TaskManagement() {
     priority: "High",
   });
 
+  const { profile } = useContext(UserContext);
   const navigate = useNavigate();
+
+  const fetchTasks = async () => {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) return;
+
+    const { data, error } = await supabase
+      .from("tasks")
+      .select("id, name, course, due, priority, completed")
+      .eq("user_id", user.id)
+      .order("due", { ascending: true });
+
+    if (!error && data) {
+      setTasks(data);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleAddTask = () => {
+  const handleAddTask = async () => {
     if (formData.name && formData.course && formData.due && formData.priority) {
-      setTasks((prev) => [...prev, formData]);
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        alert("You must be signed in to add a task.");
+        return;
+      }
+
+      const { error: insertError } = await supabase.from("tasks").insert([
+        {
+          name: formData.name,
+          course: formData.course,
+          due: formData.due,
+          priority: formData.priority,
+          completed: false,
+          user_id: user.id,
+        },
+      ]);
+
+      if (insertError) {
+        alert("Error adding task: " + insertError.message);
+        return;
+      }
+
       setFormData({ name: "", course: "", due: "", priority: "High" });
       setShowForm(false);
       document.body.classList.remove("modal-open");
+      fetchTasks();
+    }
+  };
+
+  const handleToggleComplete = async (taskId, currentStatus) => {
+    const { error } = await supabase
+      .from("tasks")
+      .update({ completed: !currentStatus })
+      .eq("id", taskId);
+
+    if (!error) {
+      fetchTasks();
     }
   };
 
@@ -45,8 +108,12 @@ export default function TaskManagement() {
             <h2>Task Management</h2>
           </div>
           <div className="user-area">
-            <span>Noam Shavit</span>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png" alt="User" className="user-icon" />
+            <span>{profile?.full_name?.split(" ")[0] || "User"}</span>
+            <img
+              src={profile?.profile_picture || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"}
+              alt="User"
+              className="user-icon"
+            />
           </div>
         </div>
 
@@ -57,7 +124,7 @@ export default function TaskManagement() {
               <img src={searchIcon} alt="Search" className="search-icon" />
             </div>
             <div className="task-filters">
-              {['All', 'High', 'Medium', 'Low'].map(level => (
+              {["All", "High", "Medium", "Low"].map(level => (
                 <button
                   key={level}
                   className={filter === level ? "active" : ""}
@@ -81,6 +148,7 @@ export default function TaskManagement() {
                   <th>Course</th>
                   <th>Due Date</th>
                   <th>Priority</th>
+                  <th>Completed</th>
                 </tr>
               </thead>
               <tbody>
@@ -89,9 +157,13 @@ export default function TaskManagement() {
                     <td>{task.name}</td>
                     <td>{task.course}</td>
                     <td>{task.due}</td>
+                    <td>{task.priority}</td>
                     <td>
-                      {task.priority}
-                      <input type="checkbox" className="priority-check" />
+                      <input
+                        type="checkbox"
+                        checked={task.completed}
+                        onChange={() => handleToggleComplete(task.id, task.completed)}
+                      />
                     </td>
                   </tr>
                 ))}

@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import "../styles/Settings.css";
+import { supabase } from "../supabase/supabaseClient";
+import { UserContext } from "./UserContext";
 
 export default function Settings() {
+  const { user, profile, setProfile } = useContext(UserContext);
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -13,23 +17,113 @@ export default function Settings() {
     confirmPassword: "",
     profilePicture: "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png",
   });
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: files ? URL.createObjectURL(files[0]) : value
-    }));
+  const uploadImageToStorage = async (file) => {
+    if (!file || !user) {
+      console.warn("Missing file or user info.");
+      return null;
+    }
+
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${user.id}_${Date.now()}.${fileExt}`;
+    const filePath = `${fileName}`;
+
+    const { error: uploadError } = await supabase
+      .storage
+      .from("avatars")
+      .upload(filePath, file, { upsert: true });
+
+    if (uploadError) {
+      alert("Error uploading image: " + uploadError.message);
+      console.error(uploadError);
+      return null;
+    }
+
+    const { data: publicUrlData, error: urlError } = supabase
+      .storage
+      .from("avatars")
+      .getPublicUrl(filePath);
+
+    if (urlError) {
+      console.error("Error getting public URL:", urlError.message);
+      return null;
+    }
+
+    return publicUrlData?.publicUrl || null;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Saved data:", formData);
+  const handleChange = async (e) => {
+    const { name, value, files } = e.target;
+
+    if (name === "profilePicture" && files.length > 0) {
+      const uploadedUrl = await uploadImageToStorage(files[0]);
+      if (uploadedUrl) {
+        setFormData(prev => ({ ...prev, profilePicture: uploadedUrl }));
+      }
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!user) return;
+
+    const { error } = await supabase
+      .from("users_profiles")
+      .upsert([{
+        id: user.id,
+        full_name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        phone: formData.phone,
+        profile_picture: formData.profilePicture,
+      }]);
+
+    if (error) {
+      alert("Error saving profile: " + error.message);
+    } else {
+      alert("Profile saved successfully!");
+      setProfile({
+        ...profile,
+        full_name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        phone: formData.phone,
+        profile_picture: formData.profilePicture,
+      });
+    }
+  };
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from("users_profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+
+      if (!error && data) {
+        setProfile(data);
+        setFormData({
+          firstName: data.full_name?.split(" ")[0] || "",
+          lastName: data.full_name?.split(" ")[1] || "",
+          email: data.email || "",
+          phone: data.phone || "",
+          password: "",
+          confirmPassword: "",
+          profilePicture: data.profile_picture || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
+        });
+      }
+    };
+
+    fetchProfile();
+  }, [user]);
 
   return (
     <div className="settings-container">
@@ -41,7 +135,7 @@ export default function Settings() {
             <h2>Settings</h2>
           </div>
           <div className="user-area">
-            <span>Noam Shavit</span>
+            <span>{formData.firstName || "User"}</span>
             <img src={formData.profilePicture} alt="User" className="user-icon" />
           </div>
         </div>
@@ -62,7 +156,7 @@ export default function Settings() {
                 hidden
               />
               <h3 className="profile-name">
-                {formData.firstName || "Noam"} {formData.lastName || "Shavit"}
+                {formData.firstName || ""} {formData.lastName || ""}
               </h3>
             </div>
 
@@ -118,3 +212,7 @@ export default function Settings() {
     </div>
   );
 }
+
+
+
+

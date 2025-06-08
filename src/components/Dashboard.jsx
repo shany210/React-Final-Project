@@ -1,25 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "../styles/Dashboard.css";
 import Sidebar from "./Sidebar";
 import iconOpen from "../assets/hour-glass.svg";
 import iconComplete from "../assets/checkmark.svg";
 import iconSummary from "../assets/website.svg";
-import iconUser from "../assets/user.svg";
 import logo from "../assets/Logo.png";
+import { UserContext } from "./UserContext";
+import { supabase } from "../supabase/supabaseClient";
 
 export default function Dashboard() {
+  const { profile } = useContext(UserContext);
+
   const [tasks, setTasks] = useState([]);
   const [summaries, setSummaries] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
-    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    const storedSummaries = JSON.parse(localStorage.getItem("summaries")) || [];
-    setTasks(storedTasks);
-    setSummaries(storedSummaries);
+    const fetchTasksAndSummaries = async () => {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) return;
+
+      const { data: tasksData, error: tasksError } = await supabase
+        .from("tasks")
+        .select("name, course, due, priority, completed")
+        .eq("user_id", user.id)
+        .order("due", { ascending: true });
+
+      const { data: summariesData, error: summariesError } = await supabase
+        .from("summaries")
+        .select("title, author, date, stars, file_url")
+        .order("date", { ascending: false });
+
+      if (!tasksError) setTasks(tasksData || []);
+      if (!summariesError) setSummaries(summariesData || []);
+    };
+
+    fetchTasksAndSummaries();
   }, []);
 
-  const openTasks = tasks.length;
+  const openTasks = tasks.filter((task) => !task.completed).length;
   const completedTasks = tasks.filter((task) => task.completed).length;
   const summariesViewed = summaries.length;
 
@@ -28,17 +51,23 @@ export default function Dashboard() {
       <Sidebar isOpen={sidebarOpen} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
       <div className="dashboard-main">
-      
         <div className="header-bar">
           <div className="logo-area">
             <img src={logo} alt="StudySync Logo" className="logo-img" />
           </div>
           <div className="user-area">
-            <img src={iconUser} alt="User Profile" className="user-icon" />
+            <span>{profile?.full_name?.split(" ")[0] || "User"}</span>
+            <img
+              src={
+                profile?.profile_picture ||
+                "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
+              }
+              alt="User Profile"
+              className="user-icon"
+            />
           </div>
         </div>
 
-        
         <div className="dashboard-content">
           <div className="dashboard-stats">
             <div className="stat-box">
@@ -71,10 +100,8 @@ export default function Dashboard() {
                   <tr key={index}>
                     <td>{task.name}</td>
                     <td>{task.course}</td>
-                    <td>{task.date}</td>
-                    <td>
-                      <input type="checkbox" checked={task.completed} readOnly />
-                    </td>
+                    <td>{new Date(task.due).toLocaleDateString()}</td>
+                    <td>{task.priority}</td>
                   </tr>
                 ))}
               </tbody>
@@ -83,27 +110,38 @@ export default function Dashboard() {
 
           <section className="dashboard-section">
             <h2>Summary Library</h2>
-            <div className="summary-filters">
-              <input type="text" placeholder="Search" />
-              <button className="active">✓ New</button>
-              <button>Rating</button>
-              <button>Popular</button>
-            </div>
-
             <div className="summary-cards">
               {summaries.map((summary, i) => (
                 <div className="summary-card" key={i}>
-                  <div className="stars">
-                    {"⭐".repeat(summary.stars || 4)}
-                    {"☆".repeat(5 - (summary.stars || 4))}
-                  </div>
+                 <div className="stars">
+                 {Array.from({ length: 5 }).map((_, index) => (
+                 <span
+                 key={index}
+                 style={{
+                 color: index < parseInt(summary.stars || 0) ? "var(--star-yellow)" : "#ccc",
+            }}
+                  >
+                  ★
+                 </span>
+      ))}
+                   </div>
                   <h3>{summary.title}</h3>
-                  <p className="approved">Approved by: {summary.approvedBy || "AI"}</p>
+                  <p className="approved">Approved by: AI</p>
                   <p className="info">
                     {summary.author}
                     <br />
                     {summary.date}
                   </p>
+                  {summary.file_url && (
+                    <a
+                      href={summary.file_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="summary-link"
+                    >
+                      View File
+                    </a>
+                  )}
                 </div>
               ))}
             </div>
@@ -113,3 +151,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+

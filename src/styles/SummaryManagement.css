@@ -1,0 +1,66 @@
+.admin-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #ffffff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.admin-panel {
+  flex: 1;
+  padding: 2rem;
+  background-color: #fff;
+}
+
+.panel-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #2d2e6e;
+  margin-bottom: 1.5rem;
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.summary-table th,
+.summary-table td {
+  text-align: left;
+  padding: 1rem;
+  border-bottom: 1px solid #e8e8e8;
+  font-size: 0.95rem;
+  color: #000000; /* ✅ הוספנו צבע טקסט שחור */
+}
+
+.summary-table th {
+  background-color: #f4f6fc;
+  color: #2d2e6e;
+}
+
+.summary-table tr:last-child td {
+  border-bottom: none;
+}
+
+.status-select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-weight: 500;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #000; /* ✅ גם כאן לוודא שטקסט ברירת מחדל שחור */
+}
+
+.status-approved {
+  color: #1c7c54;
+}
+
+.status-awaiting {
+  color: #e3a008;
+}
+
+.status-rejected {
+  color: #d63638;
+}

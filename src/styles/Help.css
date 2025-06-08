@@ -21,7 +21,6 @@ html, body, #root {
   transition: all 0.3s ease;
 }
 
-/* תוקן כאן */
 .help-main.collapsed {
   width: 100%;
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/Sidebar.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { supabase } from "../supabase/supabaseClient";
 import iconDashboard from "../assets/dashboard.svg";
 import iconTasks from "../assets/checkmark2.svg";
 import iconSummaries from "../assets/paper.svg";
@@ -9,6 +10,13 @@ import iconQuestion from "../assets/question.svg";
 import iconArrow from "../assets/back.svg";
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
+
   return (
     <div className={`sidebar ${isOpen ? "open" : "collapsed"}`}>
       <div className="sidebar-header">
@@ -38,6 +46,9 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
           <img src={iconQuestion} alt="Help" />
           <span>Help</span>
         </NavLink>
+        <button className="nav-link logout-button" onClick={handleLogout}>
+          <span>Logout</span>
+        </button>
       </nav>
     </div>
   );

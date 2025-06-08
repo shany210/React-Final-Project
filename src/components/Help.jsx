@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Sidebar from "./Sidebar";
 import arrowIcon from "../assets/arrow.svg";
 import "../styles/Help.css";
+import { UserContext } from "./UserContext";
 
 export default function Help() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [openIndex, setOpenIndex] = useState(null);
+
+  const { profile } = useContext(UserContext);
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
@@ -37,9 +40,9 @@ export default function Help() {
             <h2>Help</h2>
           </div>
           <div className="user-area">
-            <span>Noam Shavit</span>
+            <span>{profile?.full_name?.split(" ")[0] || "User"}</span>
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
+              src={profile?.profile_picture || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"}
               alt="User"
               className="user-icon"
             />

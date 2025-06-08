@@ -1,9 +1,19 @@
+:root {
+  --main-purple: #5f43b2;
+  --light-purple: #f5f2ff;
+  --dark-blue: #2d2e6e;
+  --star-yellow: #42389d; 
+  --text-gray: #555;
+  --text-light: #999;
+  --gray-bg: #f8f9fc;
+}
+
 .summary-library-container {
   display: flex;
   min-height: 100vh;
   width: 100vw;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f3f6fa;
+  background-color: var(--gray-bg);
   overflow: hidden;
 }
 
@@ -35,7 +45,7 @@
 
 .logo-area h2 {
   margin: 0;
-  color: #2d2e6e;
+  color: var(--dark-blue);
   font-size: 1.5rem;
 }
 
@@ -76,33 +86,26 @@
 
 .search-bar input {
   width: 100%;
-  padding: 0.6rem 2.5rem 0.6rem 1rem; 
+  padding: 0.6rem 2.5rem 0.6rem 1rem;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 0.95rem;
-  background-color: #3c3c3c;
-  color: #fff;
-}
-.search-bar img {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 16px;
-  height: 16px;
-  filter: invert(26%) sepia(79%) saturate(1471%) hue-rotate(220deg) brightness(94%) contrast(91%);
+  background-color: #fff;
+  color: #000;
 }
 
+.search-bar img,
 .search-icon {
   position: absolute;
-  right: 12px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   width: 18px;
   height: 18px;
   filter: invert(26%) sepia(79%) saturate(1471%) hue-rotate(220deg) brightness(94%) contrast(91%);
-  pointer-events: none; 
-  }
+  pointer-events: none;
+}
+
 .filter-buttons {
   display: flex;
   gap: 0.75rem;
@@ -111,10 +114,10 @@
 
 .filter-buttons button {
   padding: 0.5rem 1.2rem;
-  border: 1px solid #6c63ff;
+  border: 1px solid var(--main-purple);
   border-radius: 8px;
   background-color: #fff;
-  color: #6c63ff;
+  color: var(--main-purple);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -122,18 +125,18 @@
 
 .filter-buttons button.active,
 .filter-buttons button:hover {
-  background-color: #6c63ff;
+  background-color: var(--main-purple);
   color: #fff;
 }
 
 .add-summary {
   background-color: #fff;
-  color: #6c63ff;
-  border: 2px solid #6c63ff;
+  color: var(--main-purple);
+  border: 2px solid var(--main-purple);
 }
 
 .add-summary:hover {
-  background-color: #6c63ff;
+  background-color: var(--main-purple);
   color: #fff;
 }
 
@@ -156,23 +159,24 @@
 
 .summary-card h3 {
   font-size: 1.2rem;
-  color: #2d2e6e;
+  color: var(--dark-blue);
   margin: 0;
+  font-weight: 600;
 }
 
 .summary-card .approved {
-  color: #666;
+  color: var(--text-gray);
   font-size: 0.95rem;
 }
 
 .summary-card .info {
-  color: #999;
+  color: var(--text-light);
   font-size: 0.85rem;
   line-height: 1.4;
 }
 
 .summary-card .stars {
-  color: #f8c52c;
+  color: var(--star-yellow);
   font-size: 1.2rem;
 }
 
@@ -210,13 +214,13 @@
   border: 1px solid #ccc;
   font-size: 1rem;
 }
+
 .upload-label {
   font-weight: 600;
   font-size: 0.95rem;
   color: #3b3f5c;
   margin-top: 0.5rem;
 }
-
 
 .modal-panel input[type="file"] {
   padding: 0.3rem;
@@ -226,7 +230,7 @@
 .modal-panel button {
   padding: 0.5rem 1rem;
   border: none;
-  background-color: #4d5fe7;
+  background-color: var(--main-purple);
   color: white;
   border-radius: 8px;
   cursor: pointer;
@@ -247,11 +251,11 @@
 .modal-open {
   overflow: hidden;
 }
+
 .modal-title {
   font-size: 1.6rem;
   font-weight: bold;
-  color: #2d2e6e;
+  color: var(--dark-blue);
   margin-bottom: 1rem;
   text-align: center;
 }
-

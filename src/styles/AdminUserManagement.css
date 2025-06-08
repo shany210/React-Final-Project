@@ -1,0 +1,76 @@
+.admin-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.admin-user-panel {
+  flex: 1;
+  padding: 2rem;
+  background-color: #f9fbff;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.panel-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #2d2e6e;
+  margin-bottom: 1.5rem;
+  align-self: flex-start;
+}
+
+.user-table {
+  width: 95%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.user-table th,
+.user-table td {
+  text-align: left;
+  padding: 1rem;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #e8e8e8;
+  color: #2d2e6e;
+}
+
+.user-table th {
+  background-color: #f4f6fc;
+  font-weight: 600;
+}
+
+.user-table tr:last-child td {
+  border-bottom: none;
+}
+
+.user-table .inactive td {
+  color: #ccc;
+}
+
+.user-table select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-weight: 500;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #2d2e6e;
+}
+
+.user-table a {
+  color: #4f46e5;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.user-table a:hover {
+  text-decoration: underline;
+}
+
+
+
