@@ -1,12 +1,53 @@
-# React + Vite
+# 📚 StudySync – מערכת עזר חכמה לסטודנטים
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+StudySync היא מערכת ניהול חכמה שנועדה לסייע לסטודנטים להתנהל טוב יותר בלימודים. המערכת מאפשרת ניהול משימות אישי והעלאת סיכומים, במטרה לחסוך זמן ולשפר את הארגון האקדמי.
+## ✨ פיצ'רים מרכזיים
 
-Currently, two official plugins are available:
+- ✅ התחברות והרשמה עם אימות משתמש
+- 📂 העלאת סיכומים אישיים לספרייה פרטית
+- 🗂️ תצוגה נוחה של כל הסיכומים לפי נושא
+- ✅ ניהול משימות – יצירה, עדכון וסימון כבוצע
+- 📆 תצוגת לוח משימות מותאמת אישית
+- 🎨 ממשק מודרני, נוח ורספונסיבי לכל סוגי המכשירים
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ טכנולוגיות בשימוש
 
-## Expanding the ESLint configuration
+- React
+- Vite.js
+- CSS Modules
+- React Router
+- Supabase (לאימות משתמשים ואחסון נתונים)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 הוראות התקנה והרצה מקומית
+
+1. לשכפל את הריפוזיטורי:
+
+```bash
+git https://github.com/shany210/React-Final-Project.git
+cd studysync
+```
+
+2. להתקין תלויות:
+
+```bash
+npm install
+npm install @supabase/supabase-js
+```
+
+3. להריץ את הפרויקט:
+
+```bash
+npm run dev
+```
+
+
+## 📁 מבנה הפרויקט
+
+- `/components` – רכיבי ממשק כלליים (כפתורים, טפסים, כרטיסים)
+- `/pages` – מסכי ניווט עיקריים: עמוד בית, כניסה, הרשמה, ספריית סיכומים, עזרה ועוד
+- `/styles` – קבצי CSS Modules עבור כל קומפוננטה
+- `/supabase` – חיבור למערכת Supabase לאימות ואחסון
+
+## 🧑‍💻 יוצרים
+
+- שני גוטליב
